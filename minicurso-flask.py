@@ -11,9 +11,14 @@ pokemons = []
 def hello_world():
     form = RegistrationForm(request.form)
     if request.method == "POST" and form.validate():
-        pokemons.append(Personagem(form.nome.data, form.skill.data))
+        pokemons.append(Personagem(form.nome.data, form.forca.data, form.inteligencia.data, form.rapidez.data ))
         flash('personagem registrado')
     return render_template('index.html', form=form, pokemons=pokemons)
+
+
+@app.route('/play')
+def play():
+    return render_template('game.html')
 
 
 if __name__ == '__main__':
