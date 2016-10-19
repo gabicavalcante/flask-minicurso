@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block title %}Index{% endblock %}
+
+{% block content %}
+    <form class="form" action="/go" method="POST">
+        <div class="form-group">
+            <label for="alvo">Alvo :</label>
+            <select multiple id="alvo" name="alvo" width="300px">
+            {% for player in players %}
+                <option value="{{ player.nome }}">{{ player.nome }}</option>
+            {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="ataque">Ataque :</label>
+            <select multiple id="ataque" name="ataque" width="300px">
+            {% for k, v in ataques.items() %}
+                <option value="{{ k }}">{{ v }}</option>
+            {% endfor %}
+            </select>
+        </div>
+        <input class="btn btn-default" type="submit" value="Select">
+    </form>
+
+
+    <p>Alvo: {{ alvo }}, Ataque: {{ ataque }}</p>
+    <p>{{ current_player }}</p>
+{% endblock %}

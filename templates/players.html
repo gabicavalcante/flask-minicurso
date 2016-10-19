@@ -1,0 +1,21 @@
+{% from "form.html" import render_field %}
+    <form class="form-inline" method=post action="/">
+          <dl>
+              {{ render_field(form.nome) }}
+              {{ render_field(form.forca) }}
+              {{ render_field(form.inteligencia) }}
+              {{ render_field(form.rapidez) }}
+          </dl>
+        <p><input class="btn btn-default" type=submit value=Register></p>
+</form>
+
+<form class="form" action="/delete" method='POST'>
+     <input name="id" type="text" />
+     <input type="submit" value="Delete personagem" />
+</form>
+
+<div>
+    {% for player in players %}
+        <p>{{ player.id }} | {{ player.nome }}</p>
+    {% endfor %}
+</div>

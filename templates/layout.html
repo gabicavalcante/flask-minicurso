@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    {% block head %}
+	    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+        <title>{% block title %}{% endblock %} - My Webpage</title>
+    {% endblock %}
+  </head>
+  <body>
+    <div class="container">
+        <div class="page-header">
+            <h1>App Flask</h1>
+          </div>
+          <p class="lead">Simples App Flask.</p>
+        {% block content %}
+        {% endblock %}
+    </div>
+  </body>
+</html>
