@@ -73,7 +73,8 @@ def delete():
 
     if request.method == "POST":
         id = int(request.form['id'])
-        Pokemons.query.filter(Pokemons.id == id).delete()
+        db.session.delete(Pokemons.query.get(id))
+        db.session.commit()
     return render_template('players.html', players=Pokemons.query.all(), form=form)
 
 
