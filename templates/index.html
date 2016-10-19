@@ -1,0 +1,14 @@
+{% from "form.html" import render_field %}
+<form method=post action="/">
+  <dl>
+    {{ render_field(form.nome) }}
+    {{ render_field(form.skill) }}
+  </dl>
+  <p><input type=submit value=Register>
+</form>
+
+<div>
+{% for pokemon in pokemons %}
+    <p>{{ pokemon.nome }}, {{ pokemon.skill }}</p>
+{% endfor %}
+</div>
