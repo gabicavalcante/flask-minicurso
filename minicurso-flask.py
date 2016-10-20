@@ -1,7 +1,7 @@
 import random
 
 from flask import Flask, request, render_template
-from sqlalchemy import func
+import logging
 
 from forms import RegistrationForm
 from flask_sqlalchemy import SQLAlchemy
@@ -12,7 +12,6 @@ app.config[
 db = SQLAlchemy(app)
 
 ataques = {1: 'ataque1', 2: 'ataque2', 3: 'ataque3'}
-current_player = None
 players = []
 
 
@@ -46,12 +45,12 @@ def hello_world():
 @app.route('/play')
 def play():
     global players
-    opt = Pokemons.query.all()
 
-    players = opt
+    players = Pokemons.query.all()
     current_player = random.choice(players)
     players.remove(current_player)
-    return render_template('game.html', players=opt, ataques=ataques, current_player=current_player.nome)
+    app.logger.info(current_player)
+    return render_template('game.html', players=players, ataques=ataques, current_player=current_player.nome)
 
 
 @app.route('/go', methods=['GET', 'POST'])
@@ -60,11 +59,16 @@ def go():
 
     alvo = request.form.getlist('alvo')
     ataque = request.form.getlist('ataque')
+
     if not players:
         players = Pokemons.query.all()
+
     current_player = random.choice(players)
     players.remove(current_player)
-    opt = Pokemons.query.all()
+    opt = list(db.session.query(Pokemons.nome))
+    opt.remove((current_player.nome,))
+
+    # app.logger.info(current_player)
     return render_template('game.html', players=opt,
                            alvo=alvo, ataques=ataques, ataque=ataque, current_player=current_player.nome)
 
