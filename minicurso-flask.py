@@ -13,9 +13,7 @@ db = SQLAlchemy(app)
 
 ataques = {1: 'ataque1', 2: 'ataque2', 3: 'ataque3'}
 current_player = None
-old_player = None
 players = []
-
 
 class Pokemons(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -54,6 +52,7 @@ def play():
 
 @app.route('/go', methods=['GET', 'POST'])
 def go():
+    global players
     alvo = request.form.getlist('alvo')
     ataque = request.form.getlist('ataque')
     if not players:
@@ -63,7 +62,7 @@ def go():
     else:
         current_player = random.choice(players)
         players.remove(current_player)
-    return render_template('game.html', pokemons=Pokemons.query.filter(Pokemons.id.in_([current_player.id])).all(),
+    return render_template('game.html', pokemons=players,
                            alvo=alvo, ataques=ataques, ataque=ataque, content=current_player)
 
 
