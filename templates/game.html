@@ -6,8 +6,8 @@
         <div class="form-group">
             <label for="alvo">Alvo :</label>
             <select multiple id="alvo" name="alvo" width="300px">
-            {% for player in players %}
-                <option value="{{ player.nome }}">{{ player.nome }}</option>
+            {% for opt in opts %}
+                <option value="{{ opt.nome }}">{{ opt.nome }}</option>
             {% endfor %}
             </select>
         </div>
@@ -23,6 +23,13 @@
     </form>
 
 
-    <p>Alvo: {{ alvo }}, Ataque: {{ ataque }}</p>
-    <p>{{ current_player }}</p>
+    <p>Ultimo ataque >> Alvo: {{ alvo }}, Ataque: {{ ataque }}</p>
+    <p>Jogador: {{ current_player }}</p>
+
+    <hr>
+
+    <h3>Outros jogadores</h3>
+    {% for player in opts %}
+        <p>{{ player.nome }} | xp: {{ player.xp }}, vida: {{ player.vida }}, força: {{ player.forca }}, inteligencia: {{ player.inteligencia }}, rapidez: {{ player.rapidez }}</p>
+    {% endfor %}
 {% endblock %}

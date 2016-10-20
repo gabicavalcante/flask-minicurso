@@ -17,8 +17,8 @@
     </form>
 
     <div>
-    {% for pokemon in pokemons %}
-        <p>{{ pokemon.nome }} | força: {{ pokemon.forca }}, inteligencia: {{ pokemon.inteligencia }}, rapidez: {{ pokemon.rapidez }}</p>
+    {% for personagem in personagens %}
+        <p>{{ personagem.nome }} | xp: {{ personagem.xp }}, vida: {{ personagem.vida }}, força: {{ personagem.forca }}, inteligencia: {{ personagem.inteligencia }}, rapidez: {{ personagem.rapidez }}</p>
     {% endfor %}
     </div>
 {% endblock %}
