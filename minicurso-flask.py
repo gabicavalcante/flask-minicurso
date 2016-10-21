@@ -1,5 +1,6 @@
 import random
-
+# http://flask-sqlalchemy.pocoo.org/2.1/queries/
+# https://community.nitrous.io/tutorials/set-up-a-python-flask-application-with-sqlite
 from flask import Flask, request, render_template
 import logging
 
