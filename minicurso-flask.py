@@ -3,7 +3,7 @@
 
 import random
 
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, flash, redirect, url_for
 import logging
 
 from forms import RegistrationForm
@@ -17,6 +17,7 @@ db = SQLAlchemy(app)
 ataques = {10: 'ataque1', 20: 'ataque2', 30: 'ataque3'}
 players = []
 current_player = None
+opts = []
 
 
 class Personagens(db.Model):
@@ -58,36 +59,58 @@ def hello_world():
 
 @app.route('/play')
 def play():
-    global players, current_player
-
+    global players, current_player, opts
     players = Personagens.query.all()
+    for player in players:
+        player.vida = 100
+        player.xp = 10
+        db.session.add(player)
+        db.session.commit()
+
     current_player = random.choice(players)
-    players.remove(current_player)
-    return render_template('game.html', opts=players, ataques=ataques, current_player=current_player.nome)
+    opts = list(players)
+    opts.remove(current_player)
+    return render_template('game.html', opts=opts, ataques=ataques, current_player=current_player.nome)
 
 
 @app.route('/go', methods=['GET', 'POST'])
 def go():
-    global players, current_player
+    global players, current_player, opts
 
+    players = db.session.query(Personagens).filter(Personagens.vida > 0).all()
     ataque = int(request.form.getlist('ataque')[0])
     alvo = Personagens.query.filter_by(nome=request.form.getlist('alvo')[0]).first()
-    alvo.vida -= ataque
+
+    # Retira o personagem com 0 de vida da rodada
+    if alvo.vida - ataque <= 0:
+        players.remove(alvo)
+        # Se um dois dois finalistas morrer o jogo acaba
+        if len(players) < 2:
+            flash("Game Over!")
+            return redirect(url_for('hello_world'))
+    else:
+        alvo.vida -= ataque
     p = Personagens.query.filter_by(nome=current_player.nome).first()
     p.xp += ataque
+    db.session.add(alvo)
+    db.session.add(p)
+    db.session.commit()
 
-    if not players:
-        players = Personagens.query.all()
+    # Função para escolher um player random diferente do current_player
+    def randomPlayer():
+        random_player = random.choice(players)
+        while random_player == current_player:
+            random_player = random.choice(players)
+        return random_player
 
-    current_player = random.choice(players)
-    players.remove(current_player)
-    opt = list(db.session.query(Personagens))
-    app.logger.info(opt)
+    current_player = randomPlayer()
+    # Filtra os opts somente por personagens ainda com vida e retira o current da lista
+    opts = list(db.session.query(Personagens).filter(Personagens.vida > 0))
+    opts.remove(current_player)
+    app.logger.info(opts)
     app.logger.info(current_player)
-    opt.remove(current_player)
 
-    # app.logger.info(current_player)
-    return render_template('game.html', opts=opt, players=Personagens.query.all(),
+    return render_template('game.html', opts=opts, players=players,
                            alvo=alvo.nome, ataques=ataques, ataque=ataque, current_player=current_player.nome)
 
 

@@ -2,6 +2,15 @@
 {% block title %}Index{% endblock %}
 
 {% block content %}
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
               <p>Cadastre seus personagens.</p>
 
     {% from "form.html" import render_field %}
