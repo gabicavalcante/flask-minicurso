@@ -1,3 +1,5 @@
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
 CREATE TABLE personagens (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
 	nome VARCHAR (50),
@@ -7,3 +9,4 @@ CREATE TABLE personagens (
 	inteligencia INTEGER,
 	rapidez INTEGER
 );
+COMMIT;

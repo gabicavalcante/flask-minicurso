@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import random
 
 from flask import Flask, request, render_template
@@ -8,7 +11,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config[
-    'SQLALCHEMY_DATABASE_URI'] = 'sqlite:////Users/gabriela/Documents/developer/minicurso-cientec/minicurso-flask/personagens.db'
+    'SQLALCHEMY_DATABASE_URI'] = 'sqlite:////Users/kessiacastro/Dev/flask-pyladies/flask-minicurso/personagens.db'
 db = SQLAlchemy(app)
 
 ataques = {10: 'ataque1', 20: 'ataque2', 30: 'ataque3'}
