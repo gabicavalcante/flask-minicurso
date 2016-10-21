@@ -1,10 +1,9 @@
-# coding=utf-8
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # http://stackoverflow.com/questions/21129020/how-to-fix-unicodedecodeerror-ascii-codec-cant-decode-byte
 import wtforms
-import sys
 
-reload(sys)
-sys.setdefaultencoding('utf8')
+
 
 class RegistrationForm(wtforms.Form):
     nome = wtforms.StringField('Nome', [wtforms.validators.Length(min=4, max=25)])
